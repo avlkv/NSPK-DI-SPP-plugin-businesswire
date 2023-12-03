@@ -87,6 +87,7 @@ class BUSINESSWIRE:
         # s = Service(executable_path=driver_path)
         # driver = webdriver.Chrome(service=s, options=chrome_options)
         # wait = WebDriverWait(driver, timeout=20)
+
         self.driver.get("https://www.businesswire.com/portal/site/home/news/")  # Открыть страницу со списком RFC в браузере
         self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.bwNewsList')))
 
