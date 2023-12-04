@@ -10,7 +10,8 @@ from selenium.webdriver.common.by import By
 from src.spp.types import SPP_document
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+import dateparser
+from datetime import datetime
 
 
 class BUSINESSWIRE:
@@ -27,6 +28,7 @@ class BUSINESSWIRE:
 
     SOURCE_NAME = 'businesswire'
     HOST = 'https://www.businesswire.com/portal/site/home/news/'
+    date_begin = datetime(2021, 1, 1)
     _content_document: list[SPP_document]
 
     def __init__(self, webdriver, *args, **kwargs):
@@ -97,7 +99,7 @@ class BUSINESSWIRE:
                 article_link = el.find_element(By.CLASS_NAME, 'bwTitleLink')
                 web_link = article_link.get_attribute('href')
                 title = article_link.text
-                pub_date = el.find_element(By.TAG_NAME, 'time').get_attribute('datetime')
+                pub_date = dateparser.parse(el.find_element(By.TAG_NAME, 'time').get_attribute('datetime'))
                 self.driver.execute_script("window.open('');")
                 self.driver.switch_to.window(self.driver.window_handles[1])
                 self.driver.get(web_link)
@@ -108,7 +110,9 @@ class BUSINESSWIRE:
                 # print(pub_date)
                 # print(text_content)
                 # print('-' * 45)
-
+                if pub_date < self.date_begin:
+                    self.logger.info(f"Достигнута дата раньше {self.date_begin}. Завершение...")
+                    break
                 document = SPP_document(
                     None,
                     title=title,
