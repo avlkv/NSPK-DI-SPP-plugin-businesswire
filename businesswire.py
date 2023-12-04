@@ -12,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import dateparser
 from datetime import datetime
-
+import pytz
 
 class BUSINESSWIRE:
     """
@@ -28,7 +28,8 @@ class BUSINESSWIRE:
 
     SOURCE_NAME = 'businesswire'
     HOST = 'https://www.businesswire.com/portal/site/home/news/'
-    date_begin = datetime(2021, 1, 1)
+    utc = pytz.UTC
+    date_begin = utc.localize(datetime(2021, 1, 1))
     _content_document: list[SPP_document]
 
     def __init__(self, webdriver, *args, **kwargs):
@@ -99,7 +100,7 @@ class BUSINESSWIRE:
                 article_link = el.find_element(By.CLASS_NAME, 'bwTitleLink')
                 web_link = article_link.get_attribute('href')
                 title = article_link.text
-                pub_date = dateparser.parse(el.find_element(By.TAG_NAME, 'time').get_attribute('datetime'))
+                pub_date = self.utc.localize(dateparser.parse(el.find_element(By.TAG_NAME, 'time').get_attribute('datetime')))
                 self.driver.execute_script("window.open('');")
                 self.driver.switch_to.window(self.driver.window_handles[1])
                 self.driver.get(web_link)
