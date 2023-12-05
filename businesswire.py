@@ -133,8 +133,12 @@ class BUSINESSWIRE:
                 self.driver.close()
                 self.driver.switch_to.window(self.driver.window_handles[0])
                 time.sleep(uniform(0.3, 1))
-            self.driver.get(
+            try:
+                self.driver.get(
                 self.driver.find_element(By.CLASS_NAME, 'pagingNext').find_element(By.TAG_NAME, 'a').get_attribute('href'))
+            except:
+                self.logger.info('Не найдено перехода на след. страницу. Завершение...')
+                break
             # print('=== NEW_PAGE ===')
             # print('=' * 90)
 
