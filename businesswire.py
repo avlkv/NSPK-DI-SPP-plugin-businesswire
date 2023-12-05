@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import dateparser
 from datetime import datetime
 import pytz
+from random import uniform
 
 class BUSINESSWIRE:
     """
@@ -103,6 +104,7 @@ class BUSINESSWIRE:
                 pub_date = dateparser.parse(el.find_element(By.TAG_NAME, 'time').get_attribute('datetime'))
                 self.driver.execute_script("window.open('');")
                 self.driver.switch_to.window(self.driver.window_handles[1])
+                time.sleep(uniform(0.1, 1.2))
                 self.driver.get(web_link)
                 self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.bw-release-story')))
                 text_content = self.driver.find_element(By.CLASS_NAME, 'bw-release-story').text
@@ -130,6 +132,7 @@ class BUSINESSWIRE:
 
                 self.driver.close()
                 self.driver.switch_to.window(self.driver.window_handles[0])
+                time.sleep(uniform(0.3, 1))
             self.driver.get(
                 self.driver.find_element(By.CLASS_NAME, 'pagingNext').find_element(By.TAG_NAME, 'a').get_attribute('href'))
             # print('=== NEW_PAGE ===')
