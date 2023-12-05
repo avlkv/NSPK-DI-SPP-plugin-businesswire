@@ -29,7 +29,7 @@ class BUSINESSWIRE:
     SOURCE_NAME = 'businesswire'
     HOST = 'https://www.businesswire.com/portal/site/home/news/'
     utc = pytz.UTC
-    date_begin = utc.localize(datetime(2023, 11, 25))
+    date_begin = utc.localize(datetime(2023, 12, 4))
     _content_document: list[SPP_document]
 
     def __init__(self, webdriver, *args, **kwargs):
