@@ -129,7 +129,7 @@ class BUSINESSWIRE:
                 )
                 # Логирование найденного документа
                 self.logger.info(self._find_document_text_for_logger(document))
-
+                self._content_document.append(document)
                 self.driver.close()
                 self.driver.switch_to.window(self.driver.window_handles[0])
                 time.sleep(uniform(0.3, 1))
